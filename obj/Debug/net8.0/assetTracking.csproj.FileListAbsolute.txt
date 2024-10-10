@@ -1,0 +1,15 @@
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/bin/Debug/net8.0/assetTracking
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/bin/Debug/net8.0/assetTracking.deps.json
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/bin/Debug/net8.0/assetTracking.runtimeconfig.json
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/bin/Debug/net8.0/assetTracking.dll
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/bin/Debug/net8.0/assetTracking.pdb
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/assetTracking.GeneratedMSBuildEditorConfig.editorconfig
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/assetTracking.AssemblyInfoInputs.cache
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/assetTracking.AssemblyInfo.cs
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/assetTracking.csproj.CoreCompileInputs.cache
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/assetTracking.sourcelink.json
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/assetTracking.dll
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/refint/assetTracking.dll
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/assetTracking.pdb
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/assetTracking.genruntimeconfig.cache
+/home/estanislao-lexicon/Lexicon/Code/weekThree/miniProject/assetTracking/obj/Debug/net8.0/ref/assetTracking.dll
