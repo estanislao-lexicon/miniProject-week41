@@ -10,29 +10,29 @@ class Program
 {
     static void Main(string[] args)
     {
-        List<Asset> tracker = new List<Asset>();
-        tracker.Add(new Smartphone("Motorola", "X3", 200, DateTime.Now.AddMonths(-36 + 4), "USA"));
-        tracker.Add(new Smartphone("Motorola", "X3", 400, DateTime.Now.AddMonths(-36 + 5), "USA"));
-        tracker.Add(new Smartphone("Motorola", "X2", 400, DateTime.Now.AddMonths(-36 + 10), "USA"));
-        tracker.Add(new Smartphone("Samsung", "Galaxy 10", 4500, DateTime.Now.AddMonths(-36 + 6), "Sweden"));
-        tracker.Add(new Smartphone("Samsung", "Galaxy 10", 4500, DateTime.Now.AddMonths(-36 + 7), "Sweden"));
-        tracker.Add(new Smartphone("Sony", "XPeria 7", 3000, DateTime.Now.AddMonths(-36 + 4), "Sweden"));
-        tracker.Add(new Smartphone("Sony", "XPeria 7", 3000, DateTime.Now.AddMonths(-36 + 5), "Sweden"));
-        tracker.Add(new Smartphone("Siemens", "Brick", 220, DateTime.Now.AddMonths(-36 + 12), "Germany"));
-        tracker.Add(new Computer("Dell", "Desktop 900", 100, DateTime.Now.AddMonths(-38), "USA"));
-        tracker.Add(new Computer("Dell", "Desktop 900", 100, DateTime.Now.AddMonths(-37), "USA"));
-        tracker.Add(new Computer("Lenovo", "X100", 300, DateTime.Now.AddMonths(-36 + 1), "USA"));
-        tracker.Add(new Computer("Lenovo", "X200", 300, DateTime.Now.AddMonths(-36 + 4), "USA"));
-        tracker.Add(new Computer("Lenovo", "X300", 500, DateTime.Now.AddMonths(-36 + 9), "USA"));
-        tracker.Add(new Computer("Dell", "Optiplex 100", 1500, DateTime.Now.AddMonths(-36 + 7), "Sweden"));
-        tracker.Add(new Computer("Dell", "Optiplex 200", 1400, DateTime.Now.AddMonths(-36 + 8), "Sweden"));
-        tracker.Add(new Computer("Dell", "Optiplex 300", 1300, DateTime.Now.AddMonths(-36 + 9), "Sweden"));
-        tracker.Add(new Computer("Asus", "ROG 600", 1600, DateTime.Now.AddMonths(-36 + 14), "Germany"));
-        tracker.Add(new Computer("Asus", "ROG 500", 1200, DateTime.Now.AddMonths(-36 + 4), "Germany"));
-        tracker.Add(new Computer("Asus", "ROG 500", 1200, DateTime.Now.AddMonths(-36 + 3), "Germany"));
-        tracker.Add(new Computer("Asus", "ROG 500", 1300, DateTime.Now.AddMonths(-36 + 2), "Germany"));
+        List<Asset> trackerList = new List<Asset>();
+        trackerList.Add(new Smartphone("Motorola", "X3", 200, DateTime.Now.AddMonths(-36 + 4), "USA"));
+        trackerList.Add(new Smartphone("Motorola", "X3", 400, DateTime.Now.AddMonths(-36 + 5), "USA"));
+        trackerList.Add(new Smartphone("Motorola", "X2", 400, DateTime.Now.AddMonths(-36 + 10), "USA"));
+        trackerList.Add(new Smartphone("Samsung", "Galaxy 10", 4500, DateTime.Now.AddMonths(-36 + 6), "Sweden"));
+        trackerList.Add(new Smartphone("Samsung", "Galaxy 10", 4500, DateTime.Now.AddMonths(-36 + 7), "Sweden"));
+        trackerList.Add(new Smartphone("Sony", "XPeria 7", 3000, DateTime.Now.AddMonths(-36 + 4), "Sweden"));
+        trackerList.Add(new Smartphone("Sony", "XPeria 7", 3000, DateTime.Now.AddMonths(-36 + 5), "Sweden"));
+        trackerList.Add(new Smartphone("Siemens", "Brick", 220, DateTime.Now.AddMonths(-36 + 12), "Germany"));
+        trackerList.Add(new Computer("Dell", "Desktop 900", 100, DateTime.Now.AddMonths(-38), "USA"));
+        trackerList.Add(new Computer("Dell", "Desktop 900", 100, DateTime.Now.AddMonths(-37), "USA"));
+        trackerList.Add(new Computer("Lenovo", "X100", 300, DateTime.Now.AddMonths(-36 + 1), "USA"));
+        trackerList.Add(new Computer("Lenovo", "X200", 300, DateTime.Now.AddMonths(-36 + 4), "USA"));
+        trackerList.Add(new Computer("Lenovo", "X300", 500, DateTime.Now.AddMonths(-36 + 9), "USA"));
+        trackerList.Add(new Computer("Dell", "Optiplex 100", 1500, DateTime.Now.AddMonths(-36 + 7), "Sweden"));
+        trackerList.Add(new Computer("Dell", "Optiplex 200", 1400, DateTime.Now.AddMonths(-36 + 8), "Sweden"));
+        trackerList.Add(new Computer("Dell", "Optiplex 300", 1300, DateTime.Now.AddMonths(-36 + 9), "Sweden"));
+        trackerList.Add(new Computer("Asus", "ROG 600", 1600, DateTime.Now.AddMonths(-36 + 14), "Germany"));
+        trackerList.Add(new Computer("Asus", "ROG 500", 1200, DateTime.Now.AddMonths(-36 + 4), "Germany"));
+        trackerList.Add(new Computer("Asus", "ROG 500", 1200, DateTime.Now.AddMonths(-36 + 3), "Germany"));
+        trackerList.Add(new Computer("Asus", "ROG 500", 1300, DateTime.Now.AddMonths(-36 + 2), "Germany"));
 
-        PrintList(tracker);
+        PrintList(trackerList);
         
         bool run = true;
         while(run == true)
@@ -43,11 +43,11 @@ class Program
 
             if(input == "A")
             {
-                NewAsset(tracker);
+                NewAsset(trackerList);
             }
             else if(input == "P")
             {
-                PrintList(tracker);
+                PrintList(trackerList);
             }
             else
             {
@@ -56,10 +56,10 @@ class Program
         }
     }
 
-    public static void PrintList(List<Asset> tracker)
+    public static void PrintList(List<Asset> trackerList)
     {
         DateTime dateNow = DateTime.Now;
-        List<Asset> trackerSorted = tracker
+        List<Asset> trackerSorted = trackerList
             .OrderBy(asset => asset.Office)
             .ThenBy(asset => asset.PurchaseDate)
             .ToList();
@@ -87,7 +87,7 @@ class Program
         }
     }
 
-    public static void NewAsset(List<Asset> tracker)
+    public static void NewAsset(List<Asset> trackerList)
     {            
         System.Console.WriteLine("Please enter the type of asset you want to create (Computer or Smartphone):");
         System.Console.Write(">");
@@ -141,7 +141,7 @@ class Program
         {
             Type assetType = Type.GetType(assetTypeName, throwOnError: true);
             Asset newAsset = (Asset)Activator.CreateInstance(assetType, brand, model, price, purchaseDate, office);
-            tracker.Add(newAsset);
+            trackerList.Add(newAsset);
             Console.WriteLine($"{type} asset created successfully!");
         }
         catch (TypeLoadException)
@@ -195,7 +195,7 @@ class Asset : IThing
 
     public void SetLocalPrice()
     {
-        // Exchange rates, add more in case of more Office created
+        // Exchange rates: add more in case of more Office created
         double SEK = 10.3937;
         double EUR = 0.9148;
         double GBP = 0.7658;
