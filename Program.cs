@@ -1,8 +1,8 @@
 ﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Common;
+using System.Globalization;
+using System.Linq;
 
 namespace assetTracking;
 
@@ -32,18 +32,42 @@ class Program
         tracker.Add(new Computer("Asus", "ROG 500", 1200, DateTime.Now.AddMonths(-36 + 3), "Germany"));
         tracker.Add(new Computer("Asus", "ROG 500", 1300, DateTime.Now.AddMonths(-36 + 2), "Germany"));
 
+        PrintList(tracker);
+        
+        bool run = true;
+        while(run == true)
+        {
+            System.Console.WriteLine("\nPress 'A' if you want to create a new Asset, 'P' to print assets list or 'Q' if you want to quit.");
+            System.Console.Write(">");
+            string input = Console.ReadLine().ToUpper();
 
+            if(input == "A")
+            {
+                NewAsset(tracker);
+            }
+            else if(input == "P")
+            {
+                PrintList(tracker);
+            }
+            else
+            {
+                run = false;
+            }
+        }
+    }
+
+    public static void PrintList(List<Asset> tracker)
+    {
         DateTime dateNow = DateTime.Now;
         List<Asset> trackerSorted = tracker
             .OrderBy(asset => asset.Office)
             .ThenBy(asset => asset.PurchaseDate)
             .ToList();
 
-        Console.WriteLine("Office".PadRight(20) +  "Asset".PadRight(20) + "Brand".PadRight(20) + "Model".PadRight(20) + "Price(USD)".PadRight(20) + "Price(local)".PadRight(20) + "Purchase Date".PadRight(20));
+        Console.WriteLine("Office".PadRight(20) +  "Asset".PadRight(20) + "Brand".PadRight(20) + "Model".PadRight(20) + "Price(USD)".PadRight(20) + "Price(local)".PadRight(20) + "Purchase Date".PadRight(20) + "\n");
 
         foreach(Asset asset in trackerSorted)        
         {
-           
             var timeDifference = dateNow.Subtract(asset.PurchaseDate);
             int experied = 1095 - timeDifference.Days;
 
@@ -59,11 +83,86 @@ class Program
                 Console.ForegroundColor = ConsoleColor.Gray;                
             }
 
-            System.Console.WriteLine(asset.Office.PadRight(20)+ asset.GetType().Name.PadRight(20) + asset.Brand.PadRight(20) + asset.Model.PadRight(20) + asset.Price.ToString().PadRight(20) + asset.PurchaseDate.ToString("dd-MM-yyyy").PadRight(20));
-
+            System.Console.WriteLine(asset.Office.PadRight(20)+ asset.GetType().Name.PadRight(20) + asset.Brand.PadRight(20) + asset.Model.PadRight(20) + asset.Price.ToString().PadRight(20) + asset.LocalPrice.ToString().PadRight(20) + asset.PurchaseDate.ToString("dd-MM-yyyy").PadRight(20));
         }
     }
-}
+
+    public static void NewAsset(List<Asset> tracker)
+    {            
+        System.Console.WriteLine("Please enter the type of asset you want to create (Computer or Smartphone):");
+        System.Console.Write(">");
+        string type = Console.ReadLine();
+        if (!string.IsNullOrEmpty(type))
+        {
+            type = char.ToUpper(type[0]) + type.Substring(1).ToLower();
+        }
+
+        System.Console.WriteLine($"Please enter the brand of the {type}:");
+        System.Console.Write(">");
+        string brand = Console.ReadLine();
+
+        System.Console.WriteLine($"Please enter the model of the {type}:");
+        System.Console.Write(">");
+        string model = Console.ReadLine();
+
+        System.Console.WriteLine($"Please enter the price in USD of the {type}:");
+        System.Console.Write(">");
+        double price = Convert.ToDouble(Console.ReadLine());
+
+        while (!double.TryParse(Console.ReadLine(), out price) || price <= 0)
+        {
+            Console.WriteLine("Invalid price. Please enter a numeric value greater than 0:");
+            Console.Write(">");
+        }
+
+        System.Console.WriteLine($"Please enter the purchase date of the {type}:");
+        System.Console.Write(">");
+        string purchaseDateString = Console.ReadLine();
+        DateTime purchaseDate;
+
+        if (!DateTime.TryParseExact(purchaseDateString, "dd-MM-yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out purchaseDate))
+        {
+            Console.WriteLine("Invalid purchase date format. Asset creation aborted.");
+            return;
+        }
+
+        System.Console.WriteLine($"Please enter the office where the {type} is located:");
+        System.Console.Write(">");
+        string office = Console.ReadLine();
+        if (!string.IsNullOrEmpty(type))
+        {
+            office = char.ToUpper(office[0]) + office.Substring(1).ToLower();
+        }
+
+
+        string assetTypeName = $"assetTracking.{type}";
+
+        try
+        {
+            Type assetType = Type.GetType(assetTypeName, throwOnError: true);
+            Asset newAsset = (Asset)Activator.CreateInstance(assetType, brand, model, price, purchaseDate, office);
+            tracker.Add(newAsset);
+            Console.WriteLine($"{type} asset created successfully!");
+        }
+        catch (TypeLoadException)
+        {
+            Console.WriteLine($"Asset type '{type}' is not recognized. Please ensure it is a valid class name.");
+        }
+        catch (MissingMethodException)
+        {
+            Console.WriteLine($"The class '{type}' does not have the expected constructor.");
+        }
+        catch (InvalidCastException)
+        {
+            Console.WriteLine($"The asset created is not of type Asset.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"An unexpected error occurred: {ex.Message}");
+        }       
+    }
+}    
+
 
 interface IThing
 {    
@@ -81,67 +180,62 @@ class Asset : IThing
     public double Price { get; set; }
     public DateTime PurchaseDate { get; set; }
     public string Office { get; set; }
-
     public double LocalPrice { get; private set; }
 
-    static async SetLocalPrice(string office)
-    {
-        string url = "https://v6.exchangerate-api.com/v6/0c6d0f2a976701ca77279360/latest/USD";
-
-        if(office == "USA")
-        {
-            LocalPrice = Price;
-        }
-        else
-        {
-            try
-            {
-                // Make the API request
-                HttpResponseMessage response = await client.GetAsync(url);
-                response.EnsureSuccessStatusCode();  // Throw if not a success code.
-
-                // Get the response body as a string
-                string responseBody = await response.Content.ReadAsStringAsync();
-
-                // Parse the JSON response
-                var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
-                var jsonResponse = JsonSerializer.Deserialize<ExchangeRateResponse>(responseBody, options);
-
-                // Access exchange rates (example for EUR)
-                decimal usdToEurRate = jsonResponse.ConversionRates["EUR"];
-
-                Console.WriteLine($"USD to EUR: {usdToEurRate}");
-            }
-            catch (HttpRequestException e)
-            {
-                // Handle potential HTTP request exceptions
-                Console.WriteLine("\nException caught!");
-                Console.WriteLine($"Message :{e.Message} ");
-            }
-        }
-    }
-}
-
-class Computer : Asset
-{
-    public Computer(string brand, string model, double price, DateTime purchaseDate, string office)
-    {
-        Brand = brand;
-        Model = model;
-        Price = price;
-        PurchaseDate = purchaseDate;
-        Office = office;        
-    }
-}
-
-class Smartphone : Asset
-{   
-    public Smartphone(string brand, string model, double price, DateTime purchaseDate, string office)
+    public Asset(string brand, string model, double price, DateTime purchaseDate, string office)
     {
         Brand = brand;
         Model = model;
         Price = price;
         PurchaseDate = purchaseDate;
         Office = office;
+
+        SetLocalPrice();
+    }
+
+    public void SetLocalPrice()
+    {
+        // Exchange rates, add more in case of more Office created
+        double SEK = 10.3937;
+        double EUR = 0.9148;
+        double GBP = 0.7658;
+        
+        if(Office == "USA")
+        {
+            LocalPrice = Price;
+        }
+        else if(Office == "Germany" || Office == "Spain" )
+        {
+             LocalPrice = Math.Round(Price * EUR, 2);
+        }
+        else if(Office == "Sweden")
+        {
+            LocalPrice = Math.Round(Price * SEK, 2);
+        }
+        else if(Office == "UK")
+        {
+            LocalPrice = Math.Round(Price * GBP, 2);
+        }
+        else
+        {
+            Console.WriteLine($"Office '{Office}' does not have a corresponding currency.");
+        }
+    }    
+}
+
+class Computer : Asset
+{
+    public Computer(string brand, string model, double price, DateTime purchaseDate, string office)
+        : base(brand, model, price, purchaseDate, office)
+    {
+            
+    }
+}
+
+class Smartphone : Asset
+{   
+    public Smartphone(string brand, string model, double price, DateTime purchaseDate, string office)
+        : base(brand, model, price, purchaseDate, office)
+    {
     }
 }

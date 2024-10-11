@@ -8,7 +8,7 @@ All assets have an end of life which for simplicity reasons is 3 years.
 
 ### Level 1
 
-- [ ] Create a console app that have classes and objects. For example like below with computers and phones.
+- [X] Create a console app that have classes and objects. For example like below with computers and phones.
 
 Laptop Computers 
 - MacBook
@@ -31,7 +31,7 @@ You will need to:
 ### Level 2
 
 - [X] Create a program to create a list of assets (inputs) where the final result is to write the following to the console: 
-- [ ] Sorted list with Class as primary (computers first, then phones)
+- [X] Sorted list with Class as primary (computers first, then phones)
 - [X] Then sorted by purchase date
 - [X] Mark any item *RED* if purchase date is less than 3 months away from 3 years.
 
@@ -39,13 +39,13 @@ You will need to:
 ### Level 3
 
 - [X] Add offices to the model: 
-- [ ] You should be able to place items in 3 different offices around the world 
-- [ ] which will use the appropriate currency for that country. 
-- [ ] You should be able to input values in dollars and convert them to each currency (based on today's currency charts)
+- [X] You should be able to place items in 3 different offices around the world (USA, Germany, Spain, UK and Sweden)
+- [X] which will use the appropriate currency for that country. 
+- [X] You should be able to input values in dollars and convert them to each currency (based on today's currency charts)
 
 When you write the list to the console: 
-- [ ] Sorted first by office
-- [ ] Then Purchase date
+- [X] Sorted first by office
+- [X] Then Purchase date
 - [X] Items *RED* if date less than 3 months away from 3 years
 - [X] Items *Yellow* if date less than 6 months away from 3 years
-- [ ] Each item should have currency according to country
+- [X] Each item should have currency according to country
