@@ -49,9 +49,13 @@ class Program
             {
                 PrintList(trackerList);
             }
-            else
+            else if(input == "Q")
             {
                 run = false;
+            }
+            else
+            {
+                System.Console.WriteLine("Please enter a valid input");
             }
         }
     }
@@ -89,12 +93,29 @@ class Program
 
     public static void NewAsset(List<Asset> trackerList)
     {            
-        System.Console.WriteLine("Please enter the type of asset you want to create (Computer or Smartphone):");
-        System.Console.Write(">");
-        string type = Console.ReadLine();
-        if (!string.IsNullOrEmpty(type))
+        string type;
+        Type assetType;
+
+        while (true)
         {
-            type = char.ToUpper(type[0]) + type.Substring(1).ToLower();
+            Console.WriteLine("Please enter the type of asset you want to create (Computer or Smartphone):");
+            Console.Write(">");
+            type = Console.ReadLine();
+                        
+            if (!string.IsNullOrEmpty(type))
+            {
+                type = char.ToUpper(type[0]) + type.Substring(1).ToLower();
+            }
+            
+            string assetTypeName = $"assetTracking.{type}";
+
+            assetType = Type.GetType(assetTypeName);
+            if (assetType != null)
+            {
+                break;
+            }
+
+            Console.WriteLine($"Asset type '{type}' is not recognized. Please ensure it is a valid class name.");
         }
 
         System.Console.WriteLine($"Please enter the brand of the {type}:");
@@ -134,20 +155,12 @@ class Program
             office = char.ToUpper(office[0]) + office.Substring(1).ToLower();
         }
 
-
-        string assetTypeName = $"assetTracking.{type}";
-
         try
-        {
-            Type assetType = Type.GetType(assetTypeName, throwOnError: true);
+        {            
             Asset newAsset = (Asset)Activator.CreateInstance(assetType, brand, model, price, purchaseDate, office);
             trackerList.Add(newAsset);
             Console.WriteLine($"{type} asset created successfully!");
-        }
-        catch (TypeLoadException)
-        {
-            Console.WriteLine($"Asset type '{type}' is not recognized. Please ensure it is a valid class name.");
-        }
+        }       
         catch (MissingMethodException)
         {
             Console.WriteLine($"The class '{type}' does not have the expected constructor.");
@@ -173,7 +186,7 @@ interface IThing
     public string Office { get; set; }
 }
 
-class Asset : IThing
+abstract class Asset : IThing
 {
     public string Brand { get; set; }
     public string Model { get; set; }
@@ -223,6 +236,7 @@ class Asset : IThing
     }    
 }
 
+// Create more Asset type if required
 class Computer : Asset
 {
     public Computer(string brand, string model, double price, DateTime purchaseDate, string office)
